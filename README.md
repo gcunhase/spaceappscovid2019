@@ -1,18 +1,18 @@
-# STEPS
-# 1. Git clone in your computer. In your terminal or CMD copy and paste the next line:
-  
-  git clone https://github.com/BrandonEscamilla/spaceappscovid2019.git
-  
-# 2. Enter the directory 
+# About
+[Intro to web dev](https://www.youtube.com/watch?v=KcyGr_onNiM&feature=youtu.be)
 
+## Steps
+1. Create API key: https://api.nasa.gov/
+2. Clone, install, start: 
+  ```
+  git clone https://github.com/gcunhase/spaceappscovid2019.git
   cd spaceappscovid2019/
-
-# 3. Run in your terminal or CMD
-  
   npm install
-
-# 4. Start the website 
-  
   npm start
+  ```
 
-That's all! 🛰
+## Notes
+* My modifications: dynamic search for image type, date, ...
+
+## Acknowledgements
+* [Original code](https://github.com/BrandonEscamilla/spaceappscovid2019)
