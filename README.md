@@ -17,7 +17,9 @@
   ```
   npm i react-search-box --save
   ```
-* TODO: filter by date OR camera type
+* TODO:
+  * filter by date
+  * filter camera type [DONE, but no results are found]
 
 ## Acknowledgements
 * [Original code](https://github.com/BrandonEscamilla/spaceappscovid2019)

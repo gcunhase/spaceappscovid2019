@@ -33,7 +33,7 @@ const App = () => {
       try {
         console.log(url);
         const res = await fetch(url);
-        console.log(res);
+        //console.log(res);
         if (res) {
           const json = await res.json();
           setResponse(json)
@@ -75,9 +75,9 @@ const App = () => {
                   </div>
                : response ? (
                       response.photos.length == 0 ? (
-                        console.log(response) &&
+                        //console.log(response) &&
                         <div className="text-not-found">
-                            <h3>Images not foun!</h3>
+                            <p>No images were found!</p>
                         </div>
                       ) : (
                         Object.entries(response.photos).map(([key, values]) => {
