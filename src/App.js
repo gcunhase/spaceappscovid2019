@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import ReactSearchBox from 'react-search-box'; //https://www.npmjs.com/package/react-search-box
+//import 'react-date-range/dist/styles.css'; // main style file
+//import 'react-date-range/dist/theme/default.css'; // theme css file
+//import { Calendar } from 'react-date-range';
+import DatePicker from "react-datepicker";
+import format from "date-fns/format";
+import "react-datepicker/dist/react-datepicker.css";
 import './App.css';
 
 
@@ -20,6 +26,7 @@ const App = () => {
   const [response, setResponse] = useState(null)
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [selectedDate, setSelectedDate] = useState('')
 
   const DEMO_KEY = 'jwIG0mMTh5mcGZT9FP8GgLxGRAJUlXpSkZ07OIdc' //Copy the NASA Key here
   const url_root = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?` // NASA URL TODO: earth_date: input from website!
@@ -47,11 +54,32 @@ const App = () => {
   }, [url]) //Watcher variables
 
   function filterImage(record) {
-      console.log('Search: ', record);
+      console.log('Search: ', record.value);
       setResponse(null)
       setError(null)
       setIsLoading(true)
-      setUrl(`${url_root}camera=${record.value}&api_key=${DEMO_KEY}`)
+      //var date = selectedDate
+      //try {
+      //  date = format(selectedDate, "yyyy-MM-dd")
+      //} catch (error) {
+      //  console.log('Date is empty')
+      //}
+      //console.log("Date: %s", date.trim().length)
+      //if (selectedDate.trim().length == 0) {
+      setUrl(`${url_root}earth_date=2019-6-3&camera=${record.value}&api_key=${DEMO_KEY}`);
+      //} else {
+      //  //console.log("URL: %s, %s", record.value, date);
+      //  setUrl(`${url_root}earth_date=${date}&camera=${record.value}&api_key=${DEMO_KEY}`)
+      //}
+  }
+
+  function searchDate(date) {
+      console.log("Search date: %s", format(date, "yyyy-MM-dd"));
+      setSelectedDate(date)
+      setResponse(null)
+      setError(null)
+      setIsLoading(true)
+      setUrl(`${url_root}earth_date=${format(date, "yyyy-MM-dd")}&api_key=${DEMO_KEY}`)
   }
 
   return (
@@ -59,14 +87,31 @@ const App = () => {
         <div className="text-header">
             <h3>Images from Curiosity <span role="img" aria-label="Rocket"> 🚀 </span></h3>
         </div>
-        <div className="search-bar-container">
-          <ReactSearchBox
-            placeholder="Search camera type"
-            value=""
-            data={data}
-            onSelect={filterImage}
-            //onSelect={record => console.log(record)}
-          />
+        <div className="filtering-container">
+          <div className="search-bar-container">
+            <ReactSearchBox
+              placeholder="Search camera type"
+              value=""
+              data={data}
+              onSelect={filterImage}
+              //onSelect={record => console.log(record)}
+            />
+          </div>
+          <p>OR</p>
+          <div className="date-picker-container">
+            <DatePicker
+              placeholderText="Select date"
+              selected={selectedDate}
+              //selected={new Date()}
+              dateFormat="yyyy-MM-dd"
+              onChange={searchDate}
+              peekNextMonth
+              showMonthDropdown
+              showYearDropdown
+              dropdownMode="select"
+              //onChange={() => console.log('Calendar')}
+            />
+          </div>
         </div>
         <div className="body-container">
             { isLoading ?
