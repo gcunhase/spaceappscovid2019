@@ -8,6 +8,13 @@
   width: 100%;
 }
 
+.search-bar-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
 .body-container {
   display: flex;
   flex-direction: row;
