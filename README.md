@@ -24,13 +24,6 @@
     npm install date-fns --save
     npm install react-datepicker --save
     ```
-    * Old one: [Calendar picker](https://www.npmjs.com/package/react-date-range)
-    ```
-    //<Calendar
-    //  date={new Date()}
-    //  onChange={() => console.log('Calendar')}
-    ///>
-    ```
 
 ## Acknowledgements
 * [Original code](https://github.com/BrandonEscamilla/spaceappscovid2019)
