@@ -26,11 +26,12 @@ const App = () => {
   const [response, setResponse] = useState(null)
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [selectedDate, setSelectedDate] = useState('')
+  const [selectedDate, setSelectedDate] = useState(new Date("2019-02-03"))
+  const [selectedCamera, setSelectedCamera] = useState("")
 
   const DEMO_KEY = 'jwIG0mMTh5mcGZT9FP8GgLxGRAJUlXpSkZ07OIdc' //Copy the NASA Key here
   const url_root = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?` // NASA URL TODO: earth_date: input from website!
-  const [url, setUrl] = useState(`${url_root}earth_date=2019-6-3&api_key=${DEMO_KEY}`) // NASA URL TODO: earth_date: input from website!
+  const [url, setUrl] = useState(`${url_root}earth_date=${format(selectedDate, "yyyy-MM-dd")}&api_key=${DEMO_KEY}`) // NASA URL TODO: earth_date: input from website!
 
   useEffect(() => {
 
@@ -54,32 +55,35 @@ const App = () => {
   }, [url]) //Watcher variables
 
   function filterImage(record) {
-      console.log('Search: ', record.value);
-      setResponse(null)
-      setError(null)
-      setIsLoading(true)
-      //var date = selectedDate
-      //try {
-      //  date = format(selectedDate, "yyyy-MM-dd")
-      //} catch (error) {
-      //  console.log('Date is empty')
-      //}
-      //console.log("Date: %s", date.trim().length)
-      //if (selectedDate.trim().length == 0) {
-      setUrl(`${url_root}earth_date=2019-6-3&camera=${record.value}&api_key=${DEMO_KEY}`);
-      //} else {
-      //  //console.log("URL: %s, %s", record.value, date);
-      //  setUrl(`${url_root}earth_date=${date}&camera=${record.value}&api_key=${DEMO_KEY}`)
-      //}
+      if (typeof record === 'string') {
+        if (record.trim().length == 0) {  //reset search bar
+          console.log('Search: ', record.length);
+          setSelectedCamera(record);
+          updateUrl(selectedDate, record);
+        }
+      } else { //search bar has value
+        console.log('Search: ', record.value);
+        setSelectedCamera(record.value);
+        updateUrl(selectedDate, record.value);
+      }
   }
 
   function searchDate(date) {
-      console.log("Search date: %s", format(date, "yyyy-MM-dd"));
-      setSelectedDate(date)
-      setResponse(null)
-      setError(null)
-      setIsLoading(true)
+      setSelectedDate(date);
+      updateUrl(date, selectedCamera);
+  }
+
+  function updateUrl(date, camera) {
+    console.log("Date: %s, camera: %s", date, camera);
+    setResponse(null);
+    setError(null);
+    setIsLoading(true);
+    if (camera.trim().length == 0) {
       setUrl(`${url_root}earth_date=${format(date, "yyyy-MM-dd")}&api_key=${DEMO_KEY}`)
+    } else {
+      setUrl(`${url_root}earth_date=${format(date, "yyyy-MM-dd")}&camera=${camera}&api_key=${DEMO_KEY}`)
+    }
+    //setUrl(`${url_root}earth_date=${format(date, "yyyy-MM-dd")}&api_key=${DEMO_KEY}`)
   }
 
   return (
@@ -94,6 +98,7 @@ const App = () => {
               value=""
               data={data}
               onSelect={filterImage}
+              onChange={filterImage}
               //onSelect={record => console.log(record)}
             />
           </div>
@@ -101,8 +106,8 @@ const App = () => {
           <div className="date-picker-container">
             <DatePicker
               placeholderText="Select date"
-              selected={selectedDate}
-              //selected={new Date()}
+              //selected={selectedDate}
+              selected={new Date(selectedDate)}
               dateFormat="yyyy-MM-dd"
               onChange={searchDate}
               peekNextMonth
